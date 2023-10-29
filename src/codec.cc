@@ -373,8 +373,8 @@ napi_value getCodecCtxFlags(napi_env env, napi_callback_info info) {
    * Input bitstream might be truncated at a random location
    * instead of only at frame boundaries.
    */
-  status = beam_set_bool(env, result, "TRUNCATED", (codec->flags & AV_CODEC_FLAG_TRUNCATED) != 0);
-  CHECK_STATUS;
+//  status = beam_set_bool(env, result, "TRUNCATED", (codec->flags & AV_CODEC_FLAG_TRUNCATED) != 0);
+//  CHECK_STATUS;
   /**
    * Use interlaced DCT.
    */
@@ -521,11 +521,11 @@ napi_value setCodecCtxFlags(napi_env env, napi_callback_info info) {
    * Input bitstream might be truncated at a random location
    * instead of only at frame boundaries.
    */
-  status = beam_get_bool(env, value, "TRUNCATED", &present, &flag);
-  CHECK_STATUS;
-  if (present) { codec->flags = (flag) ?
-    codec->flags | AV_CODEC_FLAG_TRUNCATED :
-    codec->flags & ~AV_CODEC_FLAG_TRUNCATED; }
+//  status = beam_get_bool(env, value, "TRUNCATED", &present, &flag);
+//  CHECK_STATUS;
+//  if (present) { codec->flags = (flag) ?
+//    codec->flags | AV_CODEC_FLAG_TRUNCATED :
+//    codec->flags & ~AV_CODEC_FLAG_TRUNCATED; }
   /**
    * Use interlaced DCT.
    */
@@ -614,11 +614,11 @@ napi_value getCodecCtxFlags2(napi_env env, napi_callback_info info) {
   status = beam_set_bool(env, result, "LOCAL_HEADER", (codec->flags2 & AV_CODEC_FLAG2_LOCAL_HEADER) != 0);
   CHECK_STATUS;
 
-  /**
-   * timecode is in drop frame format. DEPRECATED!!!!
-   */
-  status = beam_set_bool(env, result, "DROP_FRAME_TIMECODE", (codec->flags2 & AV_CODEC_FLAG2_DROP_FRAME_TIMECODE) != 0);
-  CHECK_STATUS;
+//  /**
+//   * timecode is in drop frame format. DEPRECATED!!!!
+//   */
+//  status = beam_set_bool(env, result, "DROP_FRAME_TIMECODE", (codec->flags2 & AV_CODEC_FLAG2_DROP_FRAME_TIMECODE) != 0);
+//  CHECK_STATUS;
 
   /**
    * Input bitstream might be truncated at a packet boundaries
@@ -703,11 +703,11 @@ napi_value setCodecCtxFlags2(napi_env env, napi_callback_info info) {
   /**
    * timecode is in drop frame format. DEPRECATED!!!!
    */
-  status = beam_get_bool(env, value, "DROP_FRAME_TIMECODE", &present, &flag);
-  CHECK_STATUS;
-  if (present) { codec->flags2 = (flag) ?
-    codec->flags2 | AV_CODEC_FLAG2_DROP_FRAME_TIMECODE :
-    codec->flags2 & ~AV_CODEC_FLAG2_DROP_FRAME_TIMECODE; }
+//  status = beam_get_bool(env, value, "DROP_FRAME_TIMECODE", &present, &flag);
+//  CHECK_STATUS;
+//  if (present) { codec->flags2 = (flag) ?
+//    codec->flags2 | AV_CODEC_FLAG2_DROP_FRAME_TIMECODE :
+//    codec->flags2 & ~AV_CODEC_FLAG2_DROP_FRAME_TIMECODE; }
   /**
    * Input bitstream might be truncated at a packet boundaries
    * instead of only at frame boundaries.
@@ -4206,7 +4206,7 @@ napi_value setCodecCtxRcOverride(napi_env env, napi_callback_info info) {
   } else {
     status = napi_get_array_length(env, args[0], &count);
     CHECK_STATUS;
-  }  
+  }
   if (count == 0) {
     if (codec->rc_override != nullptr) {
       av_freep(&codec->rc_override);
