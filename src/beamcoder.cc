@@ -292,8 +292,8 @@ napi_status fromAVCodec(napi_env env, const AVCodec* codec, napi_value *result) 
   status = beam_set_bool(env, props, "DRAW_HORIZ_BAND", codec->capabilities & AV_CODEC_CAP_DRAW_HORIZ_BAND);
   PASS_STATUS;
   status = beam_set_bool(env, props, "DR1", codec->capabilities & AV_CODEC_CAP_DR1);
-  PASS_STATUS;
-  status = beam_set_bool(env, props, "TRUNCATED", codec->capabilities & AV_CODEC_CAP_TRUNCATED);
+//  PASS_STATUS;
+//  status = beam_set_bool(env, props, "TRUNCATED", codec->capabilities & AV_CODEC_CAP_TRUNCATED);
   PASS_STATUS;
   status = beam_set_bool(env, props, "DELAY", codec->capabilities & AV_CODEC_CAP_DELAY);
   PASS_STATUS;
@@ -311,16 +311,16 @@ napi_status fromAVCodec(napi_env env, const AVCodec* codec, napi_value *result) 
   PASS_STATUS;
   status = beam_set_bool(env, props, "PARAM_CHANGE", codec->capabilities & AV_CODEC_CAP_PARAM_CHANGE);
   PASS_STATUS;
-  status = beam_set_bool(env, props, "AUTO_THREADS", codec->capabilities & AV_CODEC_CAP_AUTO_THREADS);
+  status = beam_set_bool(env, props, "AUTO_THREADS", codec->capabilities & AV_CODEC_CAP_OTHER_THREADS);
   PASS_STATUS;
   status = beam_set_bool(env, props, "VARIABLE_FRAME_SIZE", codec->capabilities & AV_CODEC_CAP_VARIABLE_FRAME_SIZE);
   PASS_STATUS;
   status = beam_set_bool(env, props, "AVOID_PROBING", codec->capabilities & AV_CODEC_CAP_AVOID_PROBING);
   PASS_STATUS;
-  status = beam_set_bool(env, props, "INTRA_ONLY", codec->capabilities & AV_CODEC_CAP_INTRA_ONLY);
-  PASS_STATUS;
-  status = beam_set_bool(env, props, "LOSSLESS", codec->capabilities & AV_CODEC_CAP_LOSSLESS);
-  PASS_STATUS;
+//  status = beam_set_bool(env, props, "INTRA_ONLY", codec->capabilities & AV_CODEC_CAP_INTRA_ONLY);
+//  PASS_STATUS;
+//  status = beam_set_bool(env, props, "LOSSLESS", codec->capabilities & AV_CODEC_CAP_LOSSLESS);
+//  PASS_STATUS;
   status = beam_set_bool(env, props, "HARDWARE", codec->capabilities & AV_CODEC_CAP_HARDWARE);
   PASS_STATUS;
   status = beam_set_bool(env, props, "HYBRID", codec->capabilities & AV_CODEC_CAP_HYBRID);
@@ -891,7 +891,7 @@ napi_value Init(napi_env env, napi_value exports) {
     DECLARE_NAPI_METHOD("configurations", configurations),
     DECLARE_NAPI_METHOD("licenses", licenses),
     DECLARE_NAPI_METHOD("logging", logging),
-    DECLARE_NAPI_METHOD("setLoggingCallback", setLoggingCallback),    
+    DECLARE_NAPI_METHOD("setLoggingCallback", setLoggingCallback),
     DECLARE_NAPI_METHOD("governor", governor),
     DECLARE_NAPI_METHOD("format", makeFormat),
     DECLARE_NAPI_METHOD("decoder", decoder),

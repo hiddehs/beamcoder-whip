@@ -171,7 +171,7 @@ napi_status getIOFormatCodecTag(napi_env env, AVInputFormat* format, napi_value*
       }
       status = napi_set_element(env, value, i++, tagObj);
       PASS_STATUS;
-      tag += 2;      
+      tag += 2;
     }
   }
 
@@ -338,8 +338,8 @@ napi_value getOFormatPrivDataSize(napi_env env, napi_callback_info info) {
   status = napi_get_cb_info(env, info, nullptr, nullptr, nullptr, (void**) &oformat);
   CHECK_STATUS;
 
-  status = napi_create_int32(env, oformat->priv_data_size, &result);
-  CHECK_STATUS;
+//  status = napi_create_int32(env, oformat->priv_data_size, &result);
+//  CHECK_STATUS;
 
   return result;
 }
@@ -565,8 +565,8 @@ napi_status fromAVOutputFormat(napi_env env,
       nullptr, napi_enumerable, (void*) oformat }, // 10
     { "priv_class", nullptr, nullptr, getOFormatPrivClass, nullptr,
       nullptr, napi_enumerable, (void*) oformat },
-    { "priv_data_size", nullptr, nullptr, getOFormatPrivDataSize, nullptr,
-      nullptr, napi_enumerable, (void*) oformat },
+//    { "priv_data_size", nullptr, nullptr, getOFormatPrivDataSize, nullptr,
+//      nullptr, napi_enumerable, (void*) oformat },
     { "_oformat", nullptr, nullptr, nullptr, nullptr, extOFormat, napi_default, nullptr }
   };
   status = napi_define_properties(env, jsOFormat, 13, desc);
@@ -701,16 +701,16 @@ done:
   if ((fmtCtx->oformat == nullptr) || (found == false)) {
     NAPI_THROW_ERROR("Unable to find and/or set output format.");
   }
-  if (fmtCtx->oformat->priv_data_size > 0) {
-    av_freep(&fmtCtx->priv_data);
-    if (!(fmtCtx->priv_data = av_mallocz(fmtCtx->oformat->priv_data_size))) {
-      NAPI_THROW_ERROR("Failed to allocate memory for private data.");
-    }
-    if (fmtCtx->oformat->priv_class) {
-      *(const AVClass **) fmtCtx->priv_data = fmtCtx->oformat->priv_class;
-      av_opt_set_defaults(fmtCtx->priv_data);
-    }
-  }
+//  if (fmtCtx->oformat->priv_data_size > 0) {
+//    av_freep(&fmtCtx->priv_data);
+//    if (!(fmtCtx->priv_data = av_mallocz(fmtCtx->oformat->priv_data_size))) {
+//      NAPI_THROW_ERROR("Failed to allocate memory for private data.");
+//    }
+//    if (fmtCtx->oformat->priv_class) {
+//      *(const AVClass **) fmtCtx->priv_data = fmtCtx->oformat->priv_class;
+//      av_opt_set_defaults(fmtCtx->priv_data);
+//    }
+//  }
 
 over:
   status = napi_get_undefined(env, &result);
@@ -1228,8 +1228,8 @@ napi_value getFmtCtxFlags(napi_env env, napi_callback_info info) {
   status = beam_set_bool(env, result, "SORT_DTS", fmtCtx->flags & AVFMT_FLAG_SORT_DTS);
   CHECK_STATUS;
   // Enable use of private options by delaying codec open (this could be made default once all code is converted)
-  status = beam_set_bool(env, result, "PRIV_OPT", fmtCtx->flags & AVFMT_FLAG_PRIV_OPT);
-  CHECK_STATUS;
+//  status = beam_set_bool(env, result, "PRIV_OPT", fmtCtx->flags & AVFMT_FLAG_PRIV_OPT);
+//  CHECK_STATUS;
   // Enable fast, but inaccurate seeks for some formats
   status = beam_set_bool(env, result, "FAST_SEEK", fmtCtx->flags & AVFMT_FLAG_FAST_SEEK);
   CHECK_STATUS;
@@ -1337,10 +1337,10 @@ napi_value setFmtCtxFlags(napi_env env, napi_callback_info info) {
     fmtCtx->flags & ~AVFMT_FLAG_SORT_DTS; }
   // Enable use of private options by delaying codec open (this could be made default once all code is converted)
   status = beam_get_bool(env, args[0], "PRIV_OPT", &present, &flag);
-  CHECK_STATUS;
-  if (present) { fmtCtx->flags = (flag) ?
-    fmtCtx->flags | AVFMT_FLAG_PRIV_OPT :
-    fmtCtx->flags & ~AVFMT_FLAG_PRIV_OPT; }
+//  CHECK_STATUS;
+//  if (present) { fmtCtx->flags = (flag) ?
+//    fmtCtx->flags | AVFMT_FLAG_PRIV_OPT :
+//    fmtCtx->flags & ~AVFMT_FLAG_PRIV_OPT; }
   // Enable fast, but inaccurate seeks for some formats
   status = beam_get_bool(env, args[0], "FAST_SEEK", &present, &flag);
   CHECK_STATUS;
@@ -4042,7 +4042,7 @@ napi_value newStream(napi_env env, napi_callback_info info) {
     CHECK_STATUS;
   }
 
-  status = napi_get_named_property(env, jsContext, "__streams", &jsStreams); 
+  status = napi_get_named_property(env, jsContext, "__streams", &jsStreams);
   CHECK_STATUS;
   status = napi_typeof(env, jsStreams, &type);
   CHECK_STATUS;
