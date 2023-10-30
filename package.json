@@ -6,7 +6,8 @@
   "types": "index.d.ts",
   "scripts": {
     "preinstall": "node install_ffmpeg.js",
-    "install": "node-gyp rebuild",
+    "install": "node-gyp rebuild -jmax",
+    "postinstall": "node macos_post_build.js",
     "test": "tape test/*.js",
     "lint": "eslint **/*.js",
     "lint-html": "eslint **/*.js -f html -o ./reports/lint-results.html",
