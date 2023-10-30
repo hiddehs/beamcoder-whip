@@ -2,9 +2,10 @@ const {execSync} = require('node:child_process');
 const fs = require('fs');
 const path = require('path');
 
-const replacer = process.argv[2] ?? 'node_modules/beamcoder/build/Release/lib/ffmpeg/';
+const replace = process.argv[3] ?? 'macos-out/usr/local/lib/';
+const replacement = process.argv[2] ?? 'node_modules/beamcoder/build/Release/lib/ffmpeg/';
 
-console.log(`Replacing lb path with ${replacer}`);
+console.log(`Replacing lb path with ${replace}`);
 
 const compiledPath = 'build/Release/beamcoder.node';
 const otool = execSync(`otool -L ${compiledPath}`);
@@ -12,7 +13,7 @@ const lines = otool.toString().split('\n\t');
 const extractedLibraries = [];
 
 for (const line of lines) {
-  if (line.startsWith('macos-out')) {
+  if (line.startsWith(replace)) {
     const libraryPath = line.split(' ')[0]; // Extract the library path
     extractedLibraries.push(libraryPath);
   }
@@ -20,7 +21,7 @@ for (const line of lines) {
 
 
 for (const lib of extractedLibraries) {
-  execSync(`install_name_tool -change ${lib} ${lib.replace('macos-out/usr/local/lib/', replacer)} ${compiledPath}`);
+  execSync(`install_name_tool -change ${lib} ${lib.replace(replace, replacement)} ${compiledPath}`);
 }
 console.log("replace complete, new lb paths");
 console.log(execSync(`otool -L ${compiledPath}`).toString());
