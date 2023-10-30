@@ -90,10 +90,10 @@
     }],
     ['OS=="mac"', {
       "include_dirs" : [
-        "ffmpeg/out/include"
+        "ffmpeg/macos-out/usr/local/include",
       ],
       "library_dirs": [
-        "ffmpeg/out/lib",
+       "<(module_root_dir)/ffmpeg/macos-out/usr/local/lib",
       ]
     }],
   ]
