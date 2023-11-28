@@ -95,38 +95,38 @@ async function inflate(rs, folder, name) {
 async function win32() {
   console.log('Checking/Installing FFmpeg dependencies for Beam Coder on Windows.');
 
-  await mkdir('ffmpeg').catch(e => {
-    if (e.code === 'EEXIST') return;
-    else throw e;
-  });
-
-  const ffmpegFilename = 'ffmpeg-5.x-win64-shared';
-  await access(`ffmpeg/${ffmpegFilename}`, fs.constants.R_OK).catch(async () => {
-    const html = await getHTML('https://github.com/BtbN/FFmpeg-Builds/wiki/Latest', 'latest autobuilds');
-    const htmlStr = html.toString('utf-8');
-    const autoPos = htmlStr.indexOf('<p><a href=');
-    const endPos = htmlStr.indexOf('</div>', autoPos);
-    const autoStr = htmlStr.substring(autoPos, endPos);
-    const sharedEndPos = autoStr.lastIndexOf('">win64-gpl-shared-5.');
-    if (sharedEndPos === -1)
-      throw new Error('Failed to find latest v4.x autobuild from "https://github.com/BtbN/FFmpeg-Builds/wiki/Latest"');
-    const startStr = '<p><a href="';
-    const sharedStartPos = autoStr.lastIndexOf(startStr, sharedEndPos) + startStr.length;
-    const downloadSource = autoStr.substring(sharedStartPos, sharedEndPos);
-
-    let ws_shared = fs.createWriteStream(`ffmpeg/${ffmpegFilename}.zip`);
-    await get(ws_shared, downloadSource, `${ffmpegFilename}.zip`)
-      .catch(async (err) => {
-        if (err.name === 'RedirectError') {
-          const redirectURL = err.message;
-          await get(ws_shared, redirectURL, `${ffmpegFilename}.zip`);
-        } else console.error(err);
-      });
-
-    await exec('npm install unzipper --no-save');
-    let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
-    await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
-  });
+  // await mkdir('ffmpeg').catch(e => {
+  //   if (e.code === 'EEXIST') return;
+  //   else throw e;
+  // });
+  //
+  // const ffmpegFilename = 'ffmpeg-5.x-win64-shared';
+  // await access(`ffmpeg/${ffmpegFilename}`, fs.constants.R_OK).catch(async () => {
+  //   const html = await getHTML('https://github.com/BtbN/FFmpeg-Builds/wiki/Latest', 'latest autobuilds');
+  //   const htmlStr = html.toString('utf-8');
+  //   const autoPos = htmlStr.indexOf('<p><a href=');
+  //   const endPos = htmlStr.indexOf('</div>', autoPos);
+  //   const autoStr = htmlStr.substring(autoPos, endPos);
+  //   const sharedEndPos = autoStr.lastIndexOf('">win64-gpl-shared-5.');
+  //   if (sharedEndPos === -1)
+  //     throw new Error('Failed to find latest v4.x autobuild from "https://github.com/BtbN/FFmpeg-Builds/wiki/Latest"');
+  //   const startStr = '<p><a href="';
+  //   const sharedStartPos = autoStr.lastIndexOf(startStr, sharedEndPos) + startStr.length;
+  //   const downloadSource = autoStr.substring(sharedStartPos, sharedEndPos);
+  //
+  //   let ws_shared = fs.createWriteStream(`ffmpeg/${ffmpegFilename}.zip`);
+  //   await get(ws_shared, downloadSource, `${ffmpegFilename}.zip`)
+  //     .catch(async (err) => {
+  //       if (err.name === 'RedirectError') {
+  //         const redirectURL = err.message;
+  //         await get(ws_shared, redirectURL, `${ffmpegFilename}.zip`);
+  //       } else console.error(err);
+  //     });
+  //
+  //   await exec('npm install unzipper --no-save');
+  //   let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
+  //   await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
+  // });
 }
 
 async function linux() {

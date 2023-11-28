@@ -51,14 +51,14 @@
           "ffmpeg/ffmpeg-5.x-win64-shared/include"
         ],
         "libraries": [
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/avcodec",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/avdevice",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/avfilter",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/avformat",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/avutil",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/postproc",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/swresample",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/swscale"
+          "-l../ffmpeg/ffmpeg-5.x-win64-shared/bin/avcodec",
+          "-l../ffmpeg/ffmpeg-5.x-win64-shared/bin/avdevice",
+          "-l../ffmpeg/ffmpeg-5.x-win64-shared/bin/avfilter",
+          "-l../ffmpeg/ffmpeg-5.x-win64-shared/bin/avformat",
+          "-l../ffmpeg/ffmpeg-5.x-win64-shared/bin/avutil",
+          "-l../ffmpeg/ffmpeg-5.x-win64-shared/bin/postproc",
+          "-l../ffmpeg/ffmpeg-5.x-win64-shared/bin/swresample",
+          "-l../ffmpeg/ffmpeg-5.x-win64-shared/bin/swscale"
         ],
         "copies": [
             {
