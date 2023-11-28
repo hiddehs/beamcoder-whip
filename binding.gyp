@@ -51,14 +51,14 @@
           "ffmpeg/ffmpeg-win64/include"
         ],
         "libraries": [
-          "-l../ffmpeg/ffmpeg-win64/lib/avcodec",
-          "-l../ffmpeg/ffmpeg-win64/lib/avdevice",
-          "-l../ffmpeg/ffmpeg-win64/lib/avfilter",
-          "-l../ffmpeg/ffmpeg-win64/lib/avformat",
-          "-l../ffmpeg/ffmpeg-win64/lib/avutil",
-          "-l../ffmpeg/ffmpeg-win64/lib/postproc",
-          "-l../ffmpeg/ffmpeg-win64/lib/swresample",
-          "-l../ffmpeg/ffmpeg-win64/lib/swscale"
+          "-l../ffmpeg/ffmpeg-win64/bin/avcodec",
+          "-l../ffmpeg/ffmpeg-win64/bin/avdevice",
+          "-l../ffmpeg/ffmpeg-win64/bin/avfilter",
+          "-l../ffmpeg/ffmpeg-win64/bin/avformat",
+          "-l../ffmpeg/ffmpeg-win64/bin/avutil",
+          "-l../ffmpeg/ffmpeg-win64/bin/postproc",
+          "-l../ffmpeg/ffmpeg-win64/bin/swresample",
+          "-l../ffmpeg/ffmpeg-win64/bin/swscale"
         ],
         "copies": [
             {

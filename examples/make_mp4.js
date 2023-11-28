@@ -41,7 +41,7 @@ async function run() {
     time_base: [1, 25],
     framerate: [25, 1],
     gop_size: 10,
-    max_b_frames: 1,
+    max_b_frames: 0,
     pix_fmt: 'yuv420p',
     priv_data: { preset: 'slow' }
   };
