@@ -92,13 +92,15 @@ async function inflate(rs, folder, name) {
   });
 }
 
+const whip_ffmpeg_version = 'n6.0.0-webrtc-alpha.0';
+
 async function win32() {
   console.log('Checking/Installing FFmpeg dependencies for Beam Coder on Windows.');
   const ffmpegFilename = 'ffmpeg-win64';
 
 
   await access(`ffmpeg/${ffmpegFilename}`, fs.constants.R_OK).catch(async () => {
-    const url = 'https://github.com/hiddehs/ffmpeg-webrtc/releases/download/n6.0.0-webrtc-alpha.0/ffmpeg@6-webrtc-win64.zip';
+    const url = `https://github.com/hiddehs/ffmpeg-webrtc/releases/download/${whip_ffmpeg_version}/ffmpeg@6-webrtc-win64.zip`;
     console.log(`Downloading FFmpeg build ${url}`);
     let ws_shared = fs.createWriteStream(`ffmpeg/${ffmpegFilename}.zip`);
     await get(ws_shared, url, `${ffmpegFilename}.zip`)
@@ -114,44 +116,12 @@ async function win32() {
     await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
   });
 
-
-
-  // await mkdir('ffmpeg').catch(e => {
-  //   if (e.code === 'EEXIST') return;
-  //   else throw e;
-  // });
-  //
-  // const ffmpegFilename = 'ffmpeg-5.x-win64-shared';
-  // await access(`ffmpeg/${ffmpegFilename}`, fs.constants.R_OK).catch(async () => {
-  //   const html = await getHTML('https://github.com/BtbN/FFmpeg-Builds/wiki/Latest', 'latest autobuilds');
-  //   const htmlStr = html.toString('utf-8');
-  //   const autoPos = htmlStr.indexOf('<p><a href=');
-  //   const endPos = htmlStr.indexOf('</div>', autoPos);
-  //   const autoStr = htmlStr.substring(autoPos, endPos);
-  //   const sharedEndPos = autoStr.lastIndexOf('">win64-gpl-shared-5.');
-  //   if (sharedEndPos === -1)
-  //     throw new Error('Failed to find latest v4.x autobuild from "https://github.com/BtbN/FFmpeg-Builds/wiki/Latest"');
-  //   const startStr = '<p><a href="';
-  //   const sharedStartPos = autoStr.lastIndexOf(startStr, sharedEndPos) + startStr.length;
-  //   const downloadSource = autoStr.substring(sharedStartPos, sharedEndPos);
-  //
-  //   let ws_shared = fs.createWriteStream(`ffmpeg/${ffmpegFilename}.zip`);
-  //   await get(ws_shared, downloadSource, `${ffmpegFilename}.zip`)
-  //     .catch(async (err) => {
-  //       if (err.name === 'RedirectError') {
-  //         const redirectURL = err.message;
-  //         await get(ws_shared, redirectURL, `${ffmpegFilename}.zip`);
-  //       } else console.error(err);
-  //     });
-  //
-  //   await exec('npm install unzipper --no-save');
-  //   let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
-  //   await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
-  // });
 }
 
 async function linux() {
+  throw new Error('Linux build is not available for ffmpeg-whip');
   console.log('Checking FFmpeg dependencies for Beam Coder on Linux.');
+
   const { stdout } = await execFile('ldconfig', ['-p']).catch(console.error);
   let result = 0;
 
@@ -205,7 +175,7 @@ async function darwin() {
     else throw e;
   });
   await access(`ffmpeg/${ffmpegFilename}`, fs.constants.R_OK).catch(async () => {
-    const url = 'https://github.com/hiddehs/ffmpeg-webrtc/releases/download/n6.0.0-webrtc-alpha.0/ffmpeg@6-webrtc-macos.zip';
+    const url = `https://github.com/hiddehs/ffmpeg-webrtc/releases/download/${whip_ffmpeg_version}/ffmpeg@6-webrtc-macos.zip`;
     console.log(`Downloading FFmpeg build ${url}`);
     let ws_shared = fs.createWriteStream(`ffmpeg/${ffmpegFilename}.zip`);
     await get(ws_shared, url, `${ffmpegFilename}.zip`)
