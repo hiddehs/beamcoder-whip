@@ -100,36 +100,37 @@ async function win32() {
     else throw e;
   });
 
-  const ffmpegFilename = 'ffmpeg-5.x-win64-shared';
-  await access(`ffmpeg/${ffmpegFilename}`, fs.constants.R_OK).catch(async () => {
-    const html = await getHTML('https://github.com/BtbN/FFmpeg-Builds/wiki/Latest', 'latest autobuilds');
-    const htmlStr = html.toString('utf-8');
-    const autoPos = htmlStr.indexOf('<p><a href=');
-    const endPos = htmlStr.indexOf('</div>', autoPos);
-    const autoStr = htmlStr.substring(autoPos, endPos);
-    const sharedEndPos = autoStr.lastIndexOf('">win64-gpl-shared-5.');
-    if (sharedEndPos === -1)
-      throw new Error('Failed to find latest v4.x autobuild from "https://github.com/BtbN/FFmpeg-Builds/wiki/Latest"');
-    const startStr = '<p><a href="';
-    const sharedStartPos = autoStr.lastIndexOf(startStr, sharedEndPos) + startStr.length;
-    const downloadSource = autoStr.substring(sharedStartPos, sharedEndPos);
-
-    let ws_shared = fs.createWriteStream(`ffmpeg/${ffmpegFilename}.zip`);
-    await get(ws_shared, downloadSource, `${ffmpegFilename}.zip`)
-      .catch(async (err) => {
-        if (err.name === 'RedirectError') {
-          const redirectURL = err.message;
-          await get(ws_shared, redirectURL, `${ffmpegFilename}.zip`);
-        } else console.error(err);
-      });
-
-    await exec('npm install unzipper --no-save');
-    let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
-    await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
-  });
+  // const ffmpegFilename = 'ffmpeg-5.x-win64-shared';
+  // await access(`ffmpeg/${ffmpegFilename}`, fs.constants.R_OK).catch(async () => {
+  //   const html = await getHTML('https://github.com/BtbN/FFmpeg-Builds/wiki/Latest', 'latest autobuilds');
+  //   const htmlStr = html.toString('utf-8');
+  //   const autoPos = htmlStr.indexOf('<p><a href=');
+  //   const endPos = htmlStr.indexOf('</div>', autoPos);
+  //   const autoStr = htmlStr.substring(autoPos, endPos);
+  //   const sharedEndPos = autoStr.lastIndexOf('">win64-gpl-shared-5.');
+  //   if (sharedEndPos === -1)
+  //     throw new Error('Failed to find latest v4.x autobuild from "https://github.com/BtbN/FFmpeg-Builds/wiki/Latest"');
+  //   const startStr = '<p><a href="';
+  //   const sharedStartPos = autoStr.lastIndexOf(startStr, sharedEndPos) + startStr.length;
+  //   const downloadSource = autoStr.substring(sharedStartPos, sharedEndPos);
+  //
+  //   let ws_shared = fs.createWriteStream(`ffmpeg/${ffmpegFilename}.zip`);
+  //   await get(ws_shared, downloadSource, `${ffmpegFilename}.zip`)
+  //     .catch(async (err) => {
+  //       if (err.name === 'RedirectError') {
+  //         const redirectURL = err.message;
+  //         await get(ws_shared, redirectURL, `${ffmpegFilename}.zip`);
+  //       } else console.error(err);
+  //     });
+  //
+  //   await exec('npm install unzipper --no-save');
+  //   let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
+  //   await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
+  // });
 }
 
 async function linux() {
+  throw new Error("Not supported")
   console.log('Checking FFmpeg dependencies for Beam Coder on Linux.');
   const { stdout } = await execFile('ldconfig', ['-p']).catch(console.error);
   let result = 0;
@@ -199,33 +200,6 @@ async function darwin() {
     let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
     await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
   })
-  // console.log('Checking for FFmpeg dependencies via HomeBrew.');
-  // let output;
-  // let returnMessage;
-  //
-  // try {
-  //   output = await exec('brew list ffmpeg');
-  //   returnMessage = 'FFmpeg already present via Homebrew.';
-  // } catch (err) {
-  //   if (err.stderr !== 'Error: No such keg: /usr/local/Cellar/ffmpeg\n') {
-  //     console.error(err);
-  //     console.log('Either Homebrew is not installed or something else is wrong.\nExiting');
-  //     process.exit(1);
-  //   }
-  //
-  //   console.log('FFmpeg not installed. Attempting to install via Homebrew.');
-  //   try {
-  //     output = await exec('brew install nasm pkg-config texi2html ffmpeg');
-  //     returnMessage = 'FFmpeg installed via Homebrew.';
-  //   } catch (err) {
-  //     console.log('Failed to install ffmpeg:\n');
-  //     console.error(err);
-  //     process.exit(1);
-  //   }
-  // }
-  //
-  // console.log(output.stdout);
-  // console.log(returnMessage);
 
   return 0;
 }

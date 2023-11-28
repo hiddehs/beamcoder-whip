@@ -48,30 +48,30 @@
           }
         },
         "include_dirs" : [
-          "ffmpeg/ffmpeg-5.x-win64-shared/include"
+          "ffmpeg/ffmpeg-win64/include"
         ],
         "libraries": [
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/avcodec",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/avdevice",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/avfilter",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/avformat",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/avutil",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/postproc",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/swresample",
-          "-l../ffmpeg/ffmpeg-5.x-win64-shared/lib/swscale"
+          "-l../ffmpeg/ffmpeg-win64/lib/avcodec",
+          "-l../ffmpeg/ffmpeg-win64/lib/avdevice",
+          "-l../ffmpeg/ffmpeg-win64/lib/avfilter",
+          "-l../ffmpeg/ffmpeg-win64/lib/avformat",
+          "-l../ffmpeg/ffmpeg-win64/lib/avutil",
+          "-l../ffmpeg/ffmpeg-win64/lib/postproc",
+          "-l../ffmpeg/ffmpeg-win64/lib/swresample",
+          "-l../ffmpeg/ffmpeg-win64/lib/swscale"
         ],
         "copies": [
             {
               "destination": "build/Release/",
               "files": [
-                "ffmpeg/ffmpeg-5.x-win64-shared/bin/avcodec-59.dll",
-                "ffmpeg/ffmpeg-5.x-win64-shared/bin/avdevice-59.dll",
-                "ffmpeg/ffmpeg-5.x-win64-shared/bin/avfilter-8.dll",
-                "ffmpeg/ffmpeg-5.x-win64-shared/bin/avformat-59.dll",
-                "ffmpeg/ffmpeg-5.x-win64-shared/bin/avutil-57.dll",
-                "ffmpeg/ffmpeg-5.x-win64-shared/bin/postproc-56.dll",
-                "ffmpeg/ffmpeg-5.x-win64-shared/bin/swresample-4.dll",
-                "ffmpeg/ffmpeg-5.x-win64-shared/bin/swscale-6.dll"
+                "ffmpeg/ffmpeg-win64/bin/avcodec-60.dll",
+                "ffmpeg/ffmpeg-win64/bin/avdevice-60.dll",
+                "ffmpeg/ffmpeg-win64/bin/avfilter-9.dll",
+                "ffmpeg/ffmpeg-win64/bin/avformat-60.dll",
+                "ffmpeg/ffmpeg-win64/bin/avutil-58.dll",
+                "ffmpeg/ffmpeg-win64/bin/postproc-57.dll",
+                "ffmpeg/ffmpeg-win64/bin/swresample-4.dll",
+                "ffmpeg/ffmpeg-win64/bin/swscale-7.dll"
               ]
             }
           ]
