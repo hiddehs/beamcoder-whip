@@ -72,6 +72,9 @@
                 "ffmpeg/ffmpeg-win64/bin/postproc-57.dll",
                 "ffmpeg/ffmpeg-win64/bin/swresample-4.dll",
                 "ffmpeg/ffmpeg-win64/bin/swscale-7.dll"
+                "ffmpeg/ffmpeg-win64/bin/libwinpthread-1.dll"
+                "ffmpeg/ffmpeg-win64/bin/libcrypto-3-x64.dll"
+                "ffmpeg/ffmpeg-win64/bin/libssl-3-x64.dll"
               ]
             }
           ]

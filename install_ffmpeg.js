@@ -92,7 +92,7 @@ async function inflate(rs, folder, name) {
   });
 }
 
-const whip_ffmpeg_version = 'n6.0.0-webrtc-alpha.0';
+const whip_ffmpeg_version = 'n6.0.0-webrtc-alpha.1';
 
 async function win32() {
   console.log('Checking/Installing FFmpeg dependencies for Beam Coder on Windows.');
