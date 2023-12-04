@@ -97,8 +97,10 @@ const whip_ffmpeg_version = 'n6.0.0-webrtc-alpha.1';
 async function win32() {
   console.log('Checking/Installing FFmpeg dependencies for Beam Coder on Windows.');
   const ffmpegFilename = 'ffmpeg-win64';
-
-
+  await mkdir('ffmpeg').catch(e => {
+    if (e.code === 'EEXIST') return;
+    else throw e;
+  });
   await access(`ffmpeg/${ffmpegFilename}`, fs.constants.R_OK).catch(async () => {
     const url = `https://github.com/hiddehs/ffmpeg-webrtc/releases/download/${whip_ffmpeg_version}/ffmpeg@6-webrtc-win64.zip`;
     console.log(`Downloading FFmpeg build ${url}`);
