@@ -95,14 +95,14 @@
     "copies":[{
         "destination":"<(PRODUCT_DIR)/lib",
         "files":[
-            "<(module_root_dir)/ffmpeg/macos-out/usr/local/lib/libavcodec.60.dylib",
-            "<(module_root_dir)/ffmpeg/macos-out/usr/local/lib/libavdevice.60.dylib",
-            "<(module_root_dir)/ffmpeg/macos-out/usr/local/lib/libavfilter.9.dylib",
-            "<(module_root_dir)/ffmpeg/macos-out/usr/local/lib/libavformat.60.dylib",
-            "<(module_root_dir)/ffmpeg/macos-out/usr/local/lib/libavutil.58.dylib",
-            "<(module_root_dir)/ffmpeg/macos-out/usr/local/lib/libpostproc.57.dylib",
-            "<(module_root_dir)/ffmpeg/macos-out/usr/local/lib/libswresample.4.dylib",
-            "<(module_root_dir)/ffmpeg/macos-out/usr/local/lib/libswscale.7.dylib",
+            "<(module_root_dir)/ffmpeg/macos-out/lib/libavcodec.60.dylib",
+            "<(module_root_dir)/ffmpeg/macos-out/lib/libavdevice.60.dylib",
+            "<(module_root_dir)/ffmpeg/macos-out/lib/libavfilter.9.dylib",
+            "<(module_root_dir)/ffmpeg/macos-out/lib/libavformat.60.dylib",
+            "<(module_root_dir)/ffmpeg/macos-out/lib/libavutil.58.dylib",
+            "<(module_root_dir)/ffmpeg/macos-out/lib/libpostproc.57.dylib",
+            "<(module_root_dir)/ffmpeg/macos-out/lib/libswresample.4.dylib",
+            "<(module_root_dir)/ffmpeg/macos-out/lib/libswscale.7.dylib",
         ]
     }],
     "link_settings": {
@@ -110,11 +110,11 @@
             "-Wl,-rpath,@loader_path/lib"
           ],
           "library_dirs": [
-            "<(module_root_dir)/ffmpeg/macos-out/usr/local/lib",
+            "<(module_root_dir)/ffmpeg/macos-out/lib",
           ]
       },
       "include_dirs" : [
-        "ffmpeg/macos-out/usr/local/include",
+        "ffmpeg/macos-out/include",
       ],
     }],
   ]
