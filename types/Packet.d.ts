@@ -32,6 +32,11 @@ export interface Packet {
 	 * Packet data buffers are shared between C and Javascript so can be written to and modified without having to write the buffer back into the packet
 	 */
 	data: Buffer
+	/**
+	 * The data of the packet IN A COPIED BUFFER
+	 * Packet COPIED data buffers are NOT shared between C and Javascript so can be written to and modified without having to write the buffer back into the packet
+	 */
+	data_cpy: Buffer
   /** The size in bytes of the raw data */
 	size: number
 	/** The index in the format's stream array that this packet belongs to */

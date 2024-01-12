@@ -73,3 +73,11 @@ ffmpeg/
 # Editors and IDE's
 *.swp
 .vscode/
+
+.intermediate
+
+.idea
+build-2
+ffmpeg-*
+cmake-build-debug
+out.mmp4

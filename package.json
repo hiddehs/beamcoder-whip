@@ -7,6 +7,8 @@
   "scripts": {
     "preinstall": "node install_ffmpeg.js",
     "install": "node-gyp rebuild -j 10",
+    "build": "node-gyp build -j 10",
+    "test-test": "node-gyp build -j 10 && node examples/encode_h264.js /Users/hidde/repos/vra/ffmpeg-related-forks/beamcoder-whip/examples/out.mp4",
     "test": "tape test/*.js",
     "lint": "eslint **/*.js",
     "lint-html": "eslint **/*.js -f html -o ./reports/lint-results.html",
@@ -39,6 +41,7 @@
   },
   "devDependencies": {
     "eslint": "^8.9.0",
+    "node-gyp": "^10.0.1",
     "tape": "^5.5.2"
   },
   "gypfile": true

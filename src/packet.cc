@@ -130,13 +130,40 @@ napi_value getPacketData(napi_env env, napi_callback_info info) {
 
   status = napi_get_cb_info(env, info, 0, nullptr, nullptr, (void**) &p);
   CHECK_STATUS;
-
   if (p->packet->buf == nullptr) {
     status = napi_get_null(env, &result);
   } else {
     hintRef = av_buffer_ref(p->packet->buf);
-    status = napi_create_external_buffer(env, hintRef->size, hintRef->data,
-      packetBufferFinalizer, hintRef, &result);
+    uint8_t* data = hintRef->data;
+    size_t length = hintRef->size;
+
+    status = napi_create_external_buffer(env, length, data,
+                                           packetBufferFinalizer, hintRef, &result);
+
+    CHECK_STATUS;
+  }
+
+  CHECK_STATUS;
+  return result;
+}
+
+napi_value getPacketDataCopy(napi_env env, napi_callback_info info) {
+  napi_status status;
+  napi_value result;
+  packetData* p;
+  AVBufferRef* hintRef;
+
+  status = napi_get_cb_info(env, info, 0, nullptr, nullptr, (void**) &p);
+  CHECK_STATUS;
+  if (p->packet->buf == nullptr) {
+    status = napi_get_null(env, &result);
+  } else {
+    hintRef = av_buffer_ref(p->packet->buf);
+    uint8_t* data = hintRef->data;
+    size_t length = hintRef->size;
+
+    status = napi_create_buffer_copy(env, length, data, nullptr, &result);
+
     CHECK_STATUS;
   }
 
@@ -157,6 +184,7 @@ napi_value setPacketData(napi_env env, napi_callback_info info) {
   size_t argc = 1;
   napi_value args[1];
 
+  printf("set packet data\n");
   status = napi_get_cb_info(env, info, &argc, args, nullptr, (void**) &p);
   CHECK_STATUS;
   if (argc < 1) {
@@ -702,6 +730,8 @@ napi_status fromAVPacket(napi_env env, packetData* p, napi_value* result) {
       (napi_property_attributes) (napi_writable | napi_enumerable), p },
     { "data", nullptr, nullptr, getPacketData, setPacketData, nullptr,
       (napi_property_attributes) (napi_writable | napi_enumerable), p },
+    { "data_cpy", nullptr, nullptr, getPacketDataCopy, setPacketData, nullptr,
+      (napi_property_attributes) (napi_writable | napi_enumerable), p },
     { "size", nullptr, nullptr, getPacketSize, setPacketSize, nullptr,
       (napi_property_attributes) (napi_writable | napi_enumerable), p },
     { "stream_index", nullptr, nullptr, getPacketStreamIndex, setPacketStreamIndex, nullptr,
@@ -723,7 +753,6 @@ napi_status fromAVPacket(napi_env env, packetData* p, napi_value* result) {
 
   if (p->packet->buf != nullptr) {
     p->extSize = p->packet->buf->size;
-    // printf("Size of buffer is %i\n", p->extSize);
     status = napi_adjust_external_memory(env, p->extSize, &externalMemory);
     PASS_STATUS;
   }
