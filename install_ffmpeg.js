@@ -177,6 +177,7 @@ async function darwin() {
     else throw e;
   });
   await access(`ffmpeg/${ffmpegFilename}`, fs.constants.R_OK).catch(async () => {
+                  // https://github.com/hiddehs/ffmpeg-webrtc/releases/download/n6.0.0-webrtc-alpha.1/ffmpeg@6-webrtc-macos.zip
     const url = `https://github.com/hiddehs/ffmpeg-webrtc/releases/download/${whip_ffmpeg_version}/ffmpeg@6-webrtc-macos.zip`;
     console.log(`Downloading FFmpeg build ${url}`);
     let ws_shared = fs.createWriteStream(`ffmpeg/${ffmpegFilename}.zip`);
@@ -187,10 +188,11 @@ async function darwin() {
           await get(ws_shared, redirectURL, `${ffmpegFilename}.zip`);
         } else console.error(err);
       });
-
-    await exec('npm install unzipper --no-save');
-    let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
-    await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
+    console.log(`unzip ffmpeg/${ffmpegFilename}.zip -d ffmpeg`)
+    await exec(`unzip ffmpeg/${ffmpegFilename}.zip -d ffmpeg`);
+    console.info("unzip finished")
+    // let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
+    // await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
   });
   // console.log('Checking for FFmpeg dependencies via HomeBrew.');
   // let output;
