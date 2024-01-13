@@ -786,7 +786,6 @@ void packetDataFinalizer(napi_env env, void* data, void* hint) {
 }
 
 void packetBufferFinalizer(napi_env env, void* data, void* hint) {
-    printf("final");
-//  AVBufferRef* hintRef = (AVBufferRef*) hint;
-//  av_buffer_unref(&hintRef);
+  AVBufferRef* hintRef = (AVBufferRef*) hint;
+  av_buffer_unref(&hintRef);
 };
