@@ -748,7 +748,7 @@ napi_status fromAVPacket(napi_env env, packetData* p, napi_value* result) {
     { "toJSON", nullptr, packetToJSON, nullptr, nullptr, nullptr, napi_default, p },
     { "_packet", nullptr, nullptr, nullptr, nullptr, extPacket, napi_default, nullptr }
   };
-  status = napi_define_properties(env, jsPacket, 12, desc);
+  status = napi_define_properties(env, jsPacket, 13, desc);
   PASS_STATUS;
 
   if (p->packet->buf != nullptr) {
