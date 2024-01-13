@@ -753,8 +753,8 @@ napi_status fromAVPacket(napi_env env, packetData* p, napi_value* result) {
 
   if (p->packet->buf != nullptr) {
     p->extSize = p->packet->buf->size;
-//    status = napi_adjust_external_memory(env, p->extSize, &externalMemory);
-//    PASS_STATUS;
+    status = napi_adjust_external_memory(env, p->extSize, &externalMemory);
+    PASS_STATUS;
   }
 
   *result = jsPacket;
