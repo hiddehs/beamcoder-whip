@@ -104,7 +104,7 @@ async function run(mode = "cpy") {
 if (typeof process.argv[2] === "string") {
   (async () => {
 
-    await run()
+    await run("cpy")
     console.log("done")
     // const runs = 600;
 

@@ -159,10 +159,10 @@ napi_value getPacketDataCopy(napi_env env, napi_callback_info info) {
     status = napi_get_null(env, &result);
   } else {
     hintRef = av_buffer_ref(p->packet->buf);
-    uint8_t* data = hintRef->data;
-    size_t length = hintRef->size;
+    status = napi_create_buffer_copy(env, hintRef->size, hintRef->data, NULL, &result);
 
-    status = napi_create_buffer_copy(env, length, data, nullptr, &result);
+    // force unref directly, otherwise dangling buffer in av mem / non v8 mem
+    av_buffer_unref(&hintRef);
 
     CHECK_STATUS;
   }
@@ -753,8 +753,8 @@ napi_status fromAVPacket(napi_env env, packetData* p, napi_value* result) {
 
   if (p->packet->buf != nullptr) {
     p->extSize = p->packet->buf->size;
-    status = napi_adjust_external_memory(env, p->extSize, &externalMemory);
-    PASS_STATUS;
+//    status = napi_adjust_external_memory(env, p->extSize, &externalMemory);
+//    PASS_STATUS;
   }
 
   *result = jsPacket;
@@ -786,6 +786,7 @@ void packetDataFinalizer(napi_env env, void* data, void* hint) {
 }
 
 void packetBufferFinalizer(napi_env env, void* data, void* hint) {
-  AVBufferRef* hintRef = (AVBufferRef*) hint;
-  av_buffer_unref(&hintRef);
+    printf("final");
+//  AVBufferRef* hintRef = (AVBufferRef*) hint;
+//  av_buffer_unref(&hintRef);
 };
