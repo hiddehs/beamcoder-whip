@@ -113,7 +113,7 @@ async function win32() {
         } else console.error(err);
       });
 
-    await exec('npm install unzipper --no-save');
+    await exec('pnpm install unzipper --no-save');
     let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
     await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
   });
