@@ -999,7 +999,7 @@ napi_value getFrameChanLayout(napi_env env, napi_callback_info info) {
   CHECK_STATUS;
 
   char channelLayoutName[64];
-  av_get_channel_layout_string(channelLayoutName, 64, 0, 
+  av_get_channel_layout_string(channelLayoutName, 64, 0,
     f->frame->channel_layout ? f->frame->channel_layout : av_get_default_channel_layout(f->frame->channels));
 
   status = napi_create_string_utf8(env, channelLayoutName, NAPI_AUTO_LENGTH, &result);
@@ -1089,6 +1089,64 @@ napi_value getFrameData(napi_env env, napi_callback_info info) {
   }
   if (data) {
     status = napi_create_external_buffer(env, size, data, frameBufferFinalizer, ref, &element);
+    CHECK_STATUS;
+    status = napi_set_element(env, array, curElem, element);
+    CHECK_STATUS;
+  }
+
+  CHECK_STATUS;
+  return array;
+}
+
+napi_value getFrameDataCopy(napi_env env, napi_callback_info info) {
+  napi_status status;
+  napi_value array, element;
+  frameData* f;
+  uint8_t* data;
+  AVBufferRef* ref;
+  size_t size;
+  int curElem;
+
+  status = napi_get_cb_info(env, info, 0, nullptr, nullptr, (void**) &f);
+  CHECK_STATUS;
+
+  status = napi_create_array(env, &array);
+  CHECK_STATUS;
+
+  data = f->frame->data[0];
+  ref = f->frame->buf[0] ? av_buffer_ref(f->frame->buf[0]) : nullptr;
+  size = ref ? ref->size : 0;
+  curElem = 0;
+  // work through frame bufs checking whether allocation refcounts are shared
+  for ( int x = 1 ; x < AV_NUM_DATA_POINTERS ; x++ ) {
+    // printf("Buffer %i is %p\n", x, f->frame->data[x]);
+    if (f->frame->data[x] == nullptr) continue;
+    size_t bufSize = size;
+    if (f->frame->buf[x] == nullptr)
+      bufSize = f->frame->data[x] - f->frame->data[x-1];
+
+    status = napi_create_buffer_copy(env, bufSize, data, NULL, &element);
+    av_buffer_unref(ref);
+    //    status = napi_create_external_buffer(env, bufSize, data, frameBufferFinalizer, ref, &element);
+    CHECK_STATUS;
+    status = napi_set_element(env, array, curElem, element);
+    CHECK_STATUS;
+    data = f->frame->data[x];
+    if (f->frame->buf[x]) {
+      ref = av_buffer_ref(f->frame->buf[x]);
+      size = ref->size;
+    } else {
+      ref = nullptr;
+      size -= f->frame->data[x] - f->frame->data[x-1];
+    }
+    curElem++;
+  }
+  if (data) {
+//    status = napi_create_external_buffer(env, size, data, frameBufferFinalizer, ref, &element);
+
+    status = napi_create_buffer_copy(env, size, data, NULL, &element);
+    av_buffer_unref(ref);
+
     CHECK_STATUS;
     status = napi_set_element(env, array, curElem, element);
     CHECK_STATUS;
@@ -2581,6 +2639,8 @@ napi_status fromAVFrame(napi_env env, frameData* f, napi_value* result) {
       (napi_property_attributes) (napi_writable | napi_enumerable), f },
     { "data", nullptr, nullptr, getFrameData, setFrameData, nullptr,
       (napi_property_attributes) (napi_writable | napi_enumerable), f },
+    { "data_cpy", nullptr, nullptr, getFrameDataCopy, setFrameData, nullptr,
+      (napi_property_attributes) (napi_writable | napi_enumerable), f },
     { "side_data", nullptr, nullptr, getFrameSideData, setFrameSideData, nullptr,
       (napi_property_attributes) (napi_writable | napi_enumerable), f },
     { "flags", nullptr, nullptr, getFrameFlags, setFrameFlags, nullptr,
@@ -2625,7 +2685,7 @@ napi_status fromAVFrame(napi_env env, frameData* f, napi_value* result) {
     { "toJSON", nullptr, frameToJSON, nullptr, nullptr, nullptr, napi_default, f },
     { "_frame", nullptr, nullptr, nullptr, nullptr, extFrame, napi_default, nullptr }
   };
-  status = napi_define_properties(env, jsFrame, 44, desc);
+  status = napi_define_properties(env, jsFrame, 45, desc);
   PASS_STATUS;
 
   for ( int x = 0 ; x < AV_NUM_DATA_POINTERS ; x++ ) {

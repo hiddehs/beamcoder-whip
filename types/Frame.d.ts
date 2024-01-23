@@ -91,6 +91,11 @@ export interface Frame {
 	 */
 	data: Array<Buffer>
 	/**
+	 * The data of the packet IN A COPIED BUFFER
+	 * Packet COPIED data buffers are NOT shared between C and Javascript so can be written to and modified without having to write the buffer back into the packet
+	 */
+	data_cpy: Array<Buffer>
+	/**
 	 * Additional data that can be provided by the container.
 	 * Frame can contain several types of side information.
 	 */
@@ -115,7 +120,7 @@ export interface Frame {
 	 * image, the left shows only luma, the right
 	 * shows the location of the chroma sample, the 2 could be imagined to overlay
 	 * each other but are drawn separately due to limitations of ASCII
-	 *``` 
+	 *```
 	 *                1st 2nd       1st 2nd horizontal luma sample positions
 	 *                 v   v         v   v
 	 *                 ______        ______
