@@ -1126,7 +1126,7 @@ napi_value getFrameDataCopy(napi_env env, napi_callback_info info) {
       bufSize = f->frame->data[x] - f->frame->data[x-1];
 
     status = napi_create_buffer_copy(env, bufSize, data, NULL, &element);
-    av_buffer_unref(ref);
+    av_buffer_unref(&ref);
     //    status = napi_create_external_buffer(env, bufSize, data, frameBufferFinalizer, ref, &element);
     CHECK_STATUS;
     status = napi_set_element(env, array, curElem, element);
@@ -1145,7 +1145,7 @@ napi_value getFrameDataCopy(napi_env env, napi_callback_info info) {
 //    status = napi_create_external_buffer(env, size, data, frameBufferFinalizer, ref, &element);
 
     status = napi_create_buffer_copy(env, size, data, NULL, &element);
-    av_buffer_unref(ref);
+    av_buffer_unref(&ref);
 
     CHECK_STATUS;
     status = napi_set_element(env, array, curElem, element);
