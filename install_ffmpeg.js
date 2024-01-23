@@ -24,8 +24,8 @@ const fs = require('fs');
 const util = require('util');
 const https = require('https');
 const cp = require('child_process');
-const [ mkdir, access, rename, execFile, exec ] = // eslint-disable-line
-  [ fs.mkdir, fs.access, fs.rename, cp.execFile, cp.exec ].map(util.promisify);
+const [mkdir, access, rename, execFile, exec] = // eslint-disable-line
+  [fs.mkdir, fs.access, fs.rename, cp.execFile, cp.exec].map(util.promisify);
 
 async function get(ws, url, name) {
   let received = 0;
@@ -33,7 +33,7 @@ async function get(ws, url, name) {
   return new Promise((comp, err) => {
     https.get(url, res => {
       if (res.statusCode === 301 || res.statusCode === 302) {
-        err({ name: 'RedirectError', message: res.headers.location });
+        err({name: 'RedirectError', message: res.headers.location});
       } else {
         res.pipe(ws);
         if (totalLength == 0) {
@@ -46,7 +46,7 @@ async function get(ws, url, name) {
         res.on('error', err);
         res.on('data', x => {
           received += x.length;
-          process.stdout.write(`Downloaded ${received * 100/ totalLength | 0 }% of '${name}'.\r`);
+          process.stdout.write(`Downloaded ${received * 100 / totalLength | 0}% of '${name}'.\r`);
         });
       }
     }).on('error', err);
@@ -70,7 +70,7 @@ async function getHTML(url, name) {
       res.on('data', (chunk) => {
         chunks.push(chunk);
         received += chunk.length;
-        process.stdout.write(`Downloaded ${received * 100/ totalLength | 0 }% of '${name}'.\r`);
+        process.stdout.write(`Downloaded ${received * 100 / totalLength | 0}% of '${name}'.\r`);
       });
     }).on('error', reject);
   });
@@ -82,7 +82,7 @@ async function inflate(rs, folder, name) {
   const directoryName = directory.files[0].path;
   return new Promise((comp, err) => {
     console.log(`Unzipping '${folder}/${name}.zip'.`);
-    rs.pipe(unzip.Extract({ path: folder }).on('close', () => {
+    rs.pipe(unzip.Extract({path: folder}).on('close', () => {
       fs.rename(`./${folder}/${directoryName}`, `./${folder}/${name}`, () => {
         console.log(`Unzipping of '${folder}/${name}.zip' completed.`);
         comp();
@@ -112,10 +112,11 @@ async function win32() {
           await get(ws_shared, redirectURL, `${ffmpegFilename}.zip`);
         } else console.error(err);
       });
+    console.log('Unzip the downloaded package manually with the system Zip software, npm unzipper doesn\'t work with this archive');
 
-    await exec('pnpm install unzipper --no-save');
-    let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
-    await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
+    // await exec('pnpm install unzipper --no-save');
+    // let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
+    // await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
   });
 
 }
@@ -124,7 +125,7 @@ async function linux() {
   throw new Error('Linux build is not available for ffmpeg-whip');
   console.log('Checking FFmpeg dependencies for Beam Coder on Linux.');
 
-  const { stdout } = await execFile('ldconfig', ['-p']).catch(console.error);
+  const {stdout} = await execFile('ldconfig', ['-p']).catch(console.error);
   let result = 0;
 
   if (stdout.indexOf('libavcodec.so.59') < 0) {
@@ -177,7 +178,7 @@ async function darwin() {
     else throw e;
   });
   await access(`ffmpeg/${ffmpegFilename}`, fs.constants.R_OK).catch(async () => {
-                  // https://github.com/hiddehs/ffmpeg-webrtc/releases/download/n6.0.0-webrtc-alpha.1/ffmpeg@6-webrtc-macos.zip
+    // https://github.com/hiddehs/ffmpeg-webrtc/releases/download/n6.0.0-webrtc-alpha.1/ffmpeg@6-webrtc-macos.zip
     const url = `https://github.com/hiddehs/ffmpeg-webrtc/releases/download/${whip_ffmpeg_version}/ffmpeg@6-webrtc-macos.zip`;
     console.log(`Downloading FFmpeg build ${url}`);
     let ws_shared = fs.createWriteStream(`ffmpeg/${ffmpegFilename}.zip`);
@@ -188,9 +189,9 @@ async function darwin() {
           await get(ws_shared, redirectURL, `${ffmpegFilename}.zip`);
         } else console.error(err);
       });
-    console.log(`unzip ffmpeg/${ffmpegFilename}.zip -d ffmpeg`)
+    console.log(`unzip ffmpeg/${ffmpegFilename}.zip -d ffmpeg`);
     await exec(`unzip ffmpeg/${ffmpegFilename}.zip -d ffmpeg`);
-    console.info("unzip finished")
+    console.info('unzip finished');
     // let rs_shared = fs.createReadStream(`ffmpeg/${ffmpegFilename}.zip`);
     // await inflate(rs_shared, 'ffmpeg', `${ffmpegFilename}`);
   });
